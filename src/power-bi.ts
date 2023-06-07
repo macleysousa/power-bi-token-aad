@@ -81,10 +81,8 @@ export class PowerBI extends EventEmitter {
         const page = this.client;
         page.goto('https://app.powerbi.com/singleSignOn?ru=https%3A%2F%2Fapp.powerbi.com%2F%3FnoSignUpCheck%3D1');
 
-        await page.waitForTimeout(1000 * 2);
-
+        await page.waitForNavigation();
         const hasAuth = await this.getAccessToken();
-
 
         if (!hasAuth) {
             await page.waitForSelector('input#email', { visible: true });
@@ -95,8 +93,10 @@ export class PowerBI extends EventEmitter {
 
             await page.waitForNavigation();
 
-            await page.waitForSelector('input[type="password"]', { visible: true });
-            await page.type('input[type="password"]', password);
+            await page.reload();
+
+            await page.waitForSelector('input[name="passwd"]', { visible: true });
+            await page.type('input[name="passwd"]', password);
 
             await page.waitForSelector('input[type="submit"]', { visible: true });
             await page.click('input[type="submit"]');

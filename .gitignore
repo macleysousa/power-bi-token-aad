@@ -32,6 +32,7 @@ coverage
 bower_components
 .browser
 .power-bi
+test.ts
 
 # node-waf configuration
 .lock-wscript

@@ -12,7 +12,7 @@ auth.on('ready', () => {
 
     console.log(auth.isAuthenticated);
     if (!auth.isAuthenticated)
-        auth.login('', '')
+        auth.login('suporte@hardylingerie.onmicrosoft.com', 'HardyL741')
 })
 
 auth.on('authenticated', (accessToken) => {
