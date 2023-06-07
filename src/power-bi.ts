@@ -122,12 +122,12 @@ export class PowerBI extends EventEmitter {
 
     }
 
-    on(eventName: 'ready' | 'authenticated', listener: (...args: any[]) => void) {
-        return super.on(eventName, listener);
-    }
-
     public async close(): Promise<void> {
         await this.client?.close();
         await this.browser?.close();
+    }
+
+    on(eventName: 'ready' | 'authenticated', listener: (...args: any[]) => void) {
+        return super.on(eventName, listener);
     }
 }
