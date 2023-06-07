@@ -14,6 +14,17 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     var desc = Object.getOwnPropertyDescriptor(m, k);
@@ -85,47 +96,51 @@ var PowerBI = /** @class */ (function (_super) {
     __extends(PowerBI, _super);
     function PowerBI(options) {
         var _this = this;
-        var _a, _b, _c, _d, _e, _f;
+        var _a, _b, _c, _d, _e, _f, _g, _h;
         _this = _super.call(this) || this;
         _this.options = options;
         _this.headless = (_b = (_a = _this.options) === null || _a === void 0 ? void 0 : _a.headless) !== null && _b !== void 0 ? _b : true;
         _this.userDataDir = (_d = (_c = _this.options) === null || _c === void 0 ? void 0 : _c.userDataDir) !== null && _d !== void 0 ? _d : './.power-bi';
-        _this.clientName = (_f = (_e = _this.options) === null || _e === void 0 ? void 0 : _e.clientName) !== null && _f !== void 0 ? _f : 'client';
+        _this.userAgent = (_f = (_e = _this.options) === null || _e === void 0 ? void 0 : _e.userAgent) !== null && _f !== void 0 ? _f : 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) PowerBI/2.87.821.0 Chrome/87.0.4280.141 Electron/11.2.1 Safari/537.36';
+        _this.clientName = (_h = (_g = _this.options) === null || _g === void 0 ? void 0 : _g.clientName) !== null && _h !== void 0 ? _h : 'client';
         _this.isAuthenticated = false;
         return _this;
     }
     PowerBI.prototype.init = function () {
-        var _a, _b;
+        var _a, _b, _c, _d, _e, _f;
         return __awaiter(this, void 0, void 0, function () {
-            var _c, _d, hasPowerBITeamsAppInstallationInfo;
-            return __generator(this, function (_e) {
-                switch (_e.label) {
+            var _g, _h, hasPowerBITeamsAppInstallationInfo;
+            return __generator(this, function (_j) {
+                switch (_j.label) {
                     case 0:
-                        _c = this;
-                        return [4 /*yield*/, puppeteer_1.default.launch({ headless: this.headless, userDataDir: path.resolve(this.userDataDir + '\\' + "".concat((_b = (_a = this.options) === null || _a === void 0 ? void 0 : _a.clientName) !== null && _b !== void 0 ? _b : 'client')) })];
+                        _g = this;
+                        return [4 /*yield*/, puppeteer_1.default.launch(__assign(__assign({}, (_a = this.options) === null || _a === void 0 ? void 0 : _a.puppeteer), { headless: this.headless, userDataDir: path.resolve(this.userDataDir + '\\' + "".concat((_c = (_b = this.options) === null || _b === void 0 ? void 0 : _b.clientName) !== null && _c !== void 0 ? _c : 'client')), args: (_f = (_e = (_d = this.options) === null || _d === void 0 ? void 0 : _d.puppeteer) === null || _e === void 0 ? void 0 : _e.args) !== null && _f !== void 0 ? _f : ['--disable-dev-shm-usage', '--no-sandbox'] }))];
                     case 1:
-                        _c.browser = _e.sent();
-                        _d = this;
+                        _g.browser = _j.sent();
+                        _h = this;
                         return [4 /*yield*/, this.browser.pages()];
                     case 2:
-                        _d.client = (_e.sent())[0];
-                        return [4 /*yield*/, this.client.goto('https://app.powerbi.com/')];
+                        _h.client = (_j.sent())[0];
+                        return [4 /*yield*/, this.client.setUserAgent(this.userAgent)];
                     case 3:
-                        _e.sent();
-                        return [4 /*yield*/, this.client.waitForTimeout(1000 * 2)];
+                        _j.sent();
+                        return [4 /*yield*/, this.client.goto('https://app.powerbi.com/')];
                     case 4:
-                        _e.sent();
+                        _j.sent();
+                        return [4 /*yield*/, this.client.waitForTimeout(1000 * 2)];
+                    case 5:
+                        _j.sent();
                         return [4 /*yield*/, this.client.evaluate(function () {
                                 return localStorage.getItem('PowerBITeamsAppInstallationInfo') !== null;
                             })];
-                    case 5:
-                        hasPowerBITeamsAppInstallationInfo = _e.sent();
-                        if (!hasPowerBITeamsAppInstallationInfo) return [3 /*break*/, 7];
-                        return [4 /*yield*/, this.getAccessToken()];
                     case 6:
-                        _e.sent();
-                        _e.label = 7;
+                        hasPowerBITeamsAppInstallationInfo = _j.sent();
+                        if (!hasPowerBITeamsAppInstallationInfo) return [3 /*break*/, 8];
+                        return [4 /*yield*/, this.getAccessToken()];
                     case 7:
+                        _j.sent();
+                        _j.label = 8;
+                    case 8:
                         this.emit('ready', undefined);
                         return [2 /*return*/, this];
                 }
@@ -144,7 +159,7 @@ var PowerBI = /** @class */ (function (_super) {
                         return [4 /*yield*/, this.client.reload()];
                     case 1:
                         _a.sent();
-                        return [4 /*yield*/, this.client.waitForTimeout(1000 * 2)];
+                        return [4 /*yield*/, this.client.waitForTimeout(1000 * 1)];
                     case 2:
                         _a.sent();
                         return [4 /*yield*/, this.client.evaluate(function () {

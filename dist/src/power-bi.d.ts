@@ -5,11 +5,14 @@ interface options {
     headless?: boolean;
     clientName?: string;
     userDataDir?: string;
+    puppeteer?: puppeteer.LaunchOptions & puppeteer.BrowserLaunchArgumentOptions;
+    userAgent?: string;
 }
 export declare class PowerBI extends EventEmitter {
     private options?;
     private headless;
     private userDataDir;
+    private userAgent;
     browser: puppeteer.Browser | undefined;
     client: puppeteer.Page | undefined;
     clientName: string;
