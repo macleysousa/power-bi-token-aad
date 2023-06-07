@@ -78,46 +78,55 @@ export class PowerBI extends EventEmitter {
             throw new Error('Session not initialized');
         }
 
+
+
+
         const page = this.client;
         page.goto('https://app.powerbi.com/singleSignOn?ru=https%3A%2F%2Fapp.powerbi.com%2F%3FnoSignUpCheck%3D1');
 
-        await page.waitForNavigation();
-        const hasAuth = await this.getAccessToken();
-
-        if (!hasAuth) {
-            await page.waitForSelector('input#email', { visible: true });
-            await page.type('input#email', email);
-
-            await page.waitForSelector('button#submitBtn', { visible: true });
-            await page.click('button#submitBtn');
-
+        try {
             await page.waitForNavigation();
+            const hasAuth = await this.getAccessToken();
 
-            await page.reload();
+            if (!hasAuth) {
+                await page.waitForSelector('input#email', { visible: true });
+                await page.type('input#email', email);
 
-            await page.waitForSelector('input[name="passwd"]', { visible: true });
-            await page.type('input[name="passwd"]', password);
+                await page.waitForSelector('button#submitBtn', { visible: true });
+                await page.click('button#submitBtn');
 
-            await page.waitForSelector('input[type="submit"]', { visible: true });
-            await page.click('input[type="submit"]');
+                await page.waitForNavigation();
 
-            await page.waitForNavigation();
+                await page.waitForTimeout(1000 * 2);
 
-            if (auth2) {
-                await page.waitForSelector('input[type="tel"]', { visible: true });
-                await page.type('input[type="tel"]', auth2);
+                await page.waitForSelector('input[type="password"]', { visible: true });
+                await page.type('input[type="password"]', password);
 
                 await page.waitForSelector('input[type="submit"]', { visible: true });
                 await page.click('input[type="submit"]');
 
                 await page.waitForNavigation();
+
+                if (auth2) {
+                    await page.waitForSelector('input[type="tel"]', { visible: true });
+                    await page.type('input[type="tel"]', auth2);
+
+                    await page.waitForSelector('input[type="submit"]', { visible: true });
+                    await page.click('input[type="submit"]');
+
+                    await page.waitForNavigation();
+                }
+
+                await page.goto('https://app.powerbi.com/');
+
+                await page.waitForTimeout(1000);
+
+                await this.getAccessToken();
             }
 
-            await page.goto('https://app.powerbi.com/');
-
-            await page.waitForTimeout(1000);
-
-            await this.getAccessToken();
+        } catch (err) {
+            this.emit('error', { err, screenshot: await page.screenshot(), });
+            throw err;
         }
 
     }
@@ -127,7 +136,7 @@ export class PowerBI extends EventEmitter {
         await this.browser?.close();
     }
 
-    on(eventName: 'ready' | 'authenticated', listener: (...args: any[]) => void) {
+    on(eventName: 'ready' | 'authenticated' | 'error', listener: (...args: any[]) => void) {
         return super.on(eventName, listener);
     }
 }
