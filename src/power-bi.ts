@@ -6,11 +6,14 @@ interface options {
     headless?: boolean;
     clientName?: string;
     userDataDir?: string;
+    puppeteer?: puppeteer.LaunchOptions & puppeteer.BrowserLaunchArgumentOptions;
+    userAgent?: string;
 }
 
 export class PowerBI extends EventEmitter {
     private headless: boolean = this.options?.headless ?? true;
     private userDataDir: string = this.options?.userDataDir ?? './.power-bi';
+    private userAgent: string = this.options?.userAgent ?? 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) PowerBI/2.87.821.0 Chrome/87.0.4280.141 Electron/11.2.1 Safari/537.36';
 
     public browser: puppeteer.Browser | undefined;
     public client: puppeteer.Page | undefined;
@@ -22,8 +25,15 @@ export class PowerBI extends EventEmitter {
     }
 
     public async init(): Promise<this> {
-        this.browser = await puppeteer.launch({ headless: this.headless, userDataDir: path.resolve(this.userDataDir + '\\' + `${this.options?.clientName ?? 'client'}`) });
+        this.browser = await puppeteer.launch({
+            ...this.options?.puppeteer,
+            headless: this.headless,
+            userDataDir: path.resolve(this.userDataDir + '\\' + `${this.options?.clientName ?? 'client'}`),
+            args: this.options?.puppeteer?.args ?? ['--disable-dev-shm-usage', '--no-sandbox']
+        });
         this.client = (await this.browser.pages())[0];
+
+        await this.client.setUserAgent(this.userAgent);
 
         await this.client.goto('https://app.powerbi.com/');
 
@@ -49,7 +59,7 @@ export class PowerBI extends EventEmitter {
 
         await this.client.reload();
 
-        await this.client.waitForTimeout(1000 * 2);
+        await this.client.waitForTimeout(1000 * 1);
 
         const powerBIAccess = await this.client.evaluate(() => {
             return { accessToken: eval(`powerBIAccessToken`), expiresOn: eval(`powerBIAccessTokenExpiry`) };
