@@ -178,89 +178,100 @@ var PowerBI = /** @class */ (function (_super) {
     };
     PowerBI.prototype.login = function (email, password, auth2) {
         return __awaiter(this, void 0, void 0, function () {
-            var page, hasAuth;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
+            var page, hasAuth, err_1, _a, _b;
+            var _c;
+            return __generator(this, function (_d) {
+                switch (_d.label) {
                     case 0:
                         if (!this.client) {
                             throw new Error('Session not initialized');
                         }
                         page = this.client;
                         page.goto('https://app.powerbi.com/singleSignOn?ru=https%3A%2F%2Fapp.powerbi.com%2F%3FnoSignUpCheck%3D1');
-                        return [4 /*yield*/, page.waitForNavigation()];
+                        _d.label = 1;
                     case 1:
-                        _a.sent();
-                        return [4 /*yield*/, this.getAccessToken()];
+                        _d.trys.push([1, 25, , 27]);
+                        return [4 /*yield*/, page.waitForNavigation()];
                     case 2:
-                        hasAuth = _a.sent();
-                        if (!!hasAuth) return [3 /*break*/, 23];
-                        return [4 /*yield*/, page.waitForSelector('input#email', { visible: true })];
-                    case 3:
-                        _a.sent();
-                        return [4 /*yield*/, page.type('input#email', email)];
-                    case 4:
-                        _a.sent();
-                        return [4 /*yield*/, page.waitForSelector('button#submitBtn', { visible: true })];
-                    case 5:
-                        _a.sent();
-                        return [4 /*yield*/, page.click('button#submitBtn')];
-                    case 6:
-                        _a.sent();
-                        return [4 /*yield*/, page.waitForNavigation()];
-                    case 7:
-                        _a.sent();
-                        return [4 /*yield*/, page.reload()];
-                    case 8:
-                        _a.sent();
-                        return [4 /*yield*/, page.waitForSelector('input[name="passwd"]', { visible: true })];
-                    case 9:
-                        _a.sent();
-                        return [4 /*yield*/, page.type('input[name="passwd"]', password)];
-                    case 10:
-                        _a.sent();
-                        return [4 /*yield*/, page.waitForSelector('input[type="submit"]', { visible: true })];
-                    case 11:
-                        _a.sent();
-                        return [4 /*yield*/, page.click('input[type="submit"]')];
-                    case 12:
-                        _a.sent();
-                        return [4 /*yield*/, page.waitForNavigation()];
-                    case 13:
-                        _a.sent();
-                        if (!auth2) return [3 /*break*/, 19];
-                        return [4 /*yield*/, page.waitForSelector('input[type="tel"]', { visible: true })];
-                    case 14:
-                        _a.sent();
-                        return [4 /*yield*/, page.type('input[type="tel"]', auth2)];
-                    case 15:
-                        _a.sent();
-                        return [4 /*yield*/, page.waitForSelector('input[type="submit"]', { visible: true })];
-                    case 16:
-                        _a.sent();
-                        return [4 /*yield*/, page.click('input[type="submit"]')];
-                    case 17:
-                        _a.sent();
-                        return [4 /*yield*/, page.waitForNavigation()];
-                    case 18:
-                        _a.sent();
-                        _a.label = 19;
-                    case 19: return [4 /*yield*/, page.goto('https://app.powerbi.com/')];
-                    case 20:
-                        _a.sent();
-                        return [4 /*yield*/, page.waitForTimeout(1000)];
-                    case 21:
-                        _a.sent();
+                        _d.sent();
                         return [4 /*yield*/, this.getAccessToken()];
+                    case 3:
+                        hasAuth = _d.sent();
+                        if (!!hasAuth) return [3 /*break*/, 24];
+                        return [4 /*yield*/, page.waitForSelector('input#email', { visible: true })];
+                    case 4:
+                        _d.sent();
+                        return [4 /*yield*/, page.type('input#email', email)];
+                    case 5:
+                        _d.sent();
+                        return [4 /*yield*/, page.waitForSelector('button#submitBtn', { visible: true })];
+                    case 6:
+                        _d.sent();
+                        return [4 /*yield*/, page.click('button#submitBtn')];
+                    case 7:
+                        _d.sent();
+                        return [4 /*yield*/, page.waitForNavigation()];
+                    case 8:
+                        _d.sent();
+                        return [4 /*yield*/, page.waitForTimeout(1000 * 2)];
+                    case 9:
+                        _d.sent();
+                        return [4 /*yield*/, page.waitForSelector('input[type="password"]', { visible: true })];
+                    case 10:
+                        _d.sent();
+                        return [4 /*yield*/, page.type('input[type="password"]', password)];
+                    case 11:
+                        _d.sent();
+                        return [4 /*yield*/, page.waitForSelector('input[type="submit"]', { visible: true })];
+                    case 12:
+                        _d.sent();
+                        return [4 /*yield*/, page.click('input[type="submit"]')];
+                    case 13:
+                        _d.sent();
+                        return [4 /*yield*/, page.waitForNavigation()];
+                    case 14:
+                        _d.sent();
+                        if (!auth2) return [3 /*break*/, 20];
+                        return [4 /*yield*/, page.waitForSelector('input[type="tel"]', { visible: true })];
+                    case 15:
+                        _d.sent();
+                        return [4 /*yield*/, page.type('input[type="tel"]', auth2)];
+                    case 16:
+                        _d.sent();
+                        return [4 /*yield*/, page.waitForSelector('input[type="submit"]', { visible: true })];
+                    case 17:
+                        _d.sent();
+                        return [4 /*yield*/, page.click('input[type="submit"]')];
+                    case 18:
+                        _d.sent();
+                        return [4 /*yield*/, page.waitForNavigation()];
+                    case 19:
+                        _d.sent();
+                        _d.label = 20;
+                    case 20: return [4 /*yield*/, page.goto('https://app.powerbi.com/')];
+                    case 21:
+                        _d.sent();
+                        return [4 /*yield*/, page.waitForTimeout(1000)];
                     case 22:
-                        _a.sent();
-                        _a.label = 23;
-                    case 23: return [2 /*return*/];
+                        _d.sent();
+                        return [4 /*yield*/, this.getAccessToken()];
+                    case 23:
+                        _d.sent();
+                        _d.label = 24;
+                    case 24: return [3 /*break*/, 27];
+                    case 25:
+                        err_1 = _d.sent();
+                        _a = this.emit;
+                        _b = ['error'];
+                        _c = { err: err_1 };
+                        return [4 /*yield*/, page.screenshot()];
+                    case 26:
+                        _a.apply(this, _b.concat([(_c.screenshot = _d.sent(), _c)]));
+                        throw err_1;
+                    case 27: return [2 /*return*/];
                 }
             });
         });
-    };
-    PowerBI.prototype.on = function (eventName, listener) {
-        return _super.prototype.on.call(this, eventName, listener);
     };
     PowerBI.prototype.close = function () {
         var _a, _b;
@@ -277,6 +288,9 @@ var PowerBI = /** @class */ (function (_super) {
                 }
             });
         });
+    };
+    PowerBI.prototype.on = function (eventName, listener) {
+        return _super.prototype.on.call(this, eventName, listener);
     };
     return PowerBI;
 }(events_1.EventEmitter));

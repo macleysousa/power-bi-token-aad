@@ -24,7 +24,7 @@ export declare class PowerBI extends EventEmitter {
         expiresOn: Date;
     } | undefined>;
     login(email: string, password: string, auth2?: string): Promise<void>;
-    on(eventName: 'ready' | 'authenticated', listener: (...args: any[]) => void): this;
     close(): Promise<void>;
+    on(eventName: 'ready' | 'authenticated' | 'error', listener: (...args: any[]) => void): this;
 }
 export {};
