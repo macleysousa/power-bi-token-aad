@@ -78,9 +78,6 @@ export class PowerBI extends EventEmitter {
             throw new Error('Session not initialized');
         }
 
-
-
-
         const page = this.client;
         page.goto('https://app.powerbi.com/singleSignOn?ru=https%3A%2F%2Fapp.powerbi.com%2F%3FnoSignUpCheck%3D1');
 
